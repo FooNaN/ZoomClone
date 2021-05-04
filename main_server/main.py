@@ -2,7 +2,7 @@ from flask import Flask, request
 from uuid import uuid4
 app = Flask(__name__)
 
-@app.route("/create_room", methods=["POST"])
+@app.route("/api/main/create_room", methods=["POST"])
 def create_room():
     """
     Create room and connect the user who created it
@@ -24,7 +24,7 @@ def create_room():
     # do room creation here
     return {"room_id": room_id, "status": 0}
 
-@app.route("/connect_user", methods=["POST"])
+@app.route("/api/main/connect_user", methods=["POST"])
 def connect_user():
     """
     Connect user to specified room
