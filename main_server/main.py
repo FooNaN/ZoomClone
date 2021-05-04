@@ -11,7 +11,7 @@ def create_room():
     {
         peer_id: <string>
     }
-    output JSON structure:
+    Output JSON structure:
     {
         room_id: <string>
         status: <int>
