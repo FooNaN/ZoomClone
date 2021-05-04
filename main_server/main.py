@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, make_response
 from uuid import uuid4
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def create_room():
     Output JSON structure:
     {
         room_id: <string>
-        status: <int>
+        status: <int> [unused]
     }
     """
 
@@ -22,7 +22,9 @@ def create_room():
     user_id = json["user_id"]
     room_id = uuid4() # generate random room id
     # do room creation here
-    return {"room_id": room_id, "status": 0}
+    response = make_response({"room_id": room_id, "status": 0}, 200)
+    response.mimetype = "application/json"
+    return response
 
 @app.route("/api/main/connect_user", methods=["POST"])
 def connect_user():
@@ -36,7 +38,7 @@ def connect_user():
     }
     Output JSON strucrure
     {
-        status: <int>
+        status: <int> [unused]
     }
     """
 
@@ -44,7 +46,9 @@ def connect_user():
     user_id = json["user_id"]
     room_id = json["user_id"]
     # do user connection here
-    return {"status": 0}
+    response = make_response({"status": 0}, 200)
+    response.mimetype = "application/json"
+    return response
 
 if __name__ == "__main__":
     app.run()
