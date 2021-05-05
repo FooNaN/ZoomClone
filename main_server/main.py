@@ -25,7 +25,7 @@ def create_room():
     user_id = request.get_json()["user_id"]
 
     # generate random room id
-    room_id = uuid4()
+    room_id = str(uuid4())
 
     app.logger.info("room " + str(room_id) + " created by user " + str(user_id)) # temporary code
 
@@ -38,7 +38,7 @@ def create_room():
     # checking if all is ok should be here
 
     # generate response as JSON
-    response = make_response({"room_id": room_id, "operation_status": 0}, status=200)
+    response = make_response({"room_id": room_id, "operation_status": 0}, 200)
     response.mimetype = "application/json"
     return response
 
@@ -70,7 +70,7 @@ def connect_user():
     # checking if all is ok should be here
 
     # generate response as JSON
-    response = make_response({"operation_status": 0}, status=200)
+    response = make_response({"operation_status": 0}, 200)
     response.mimetype = "application/json"
     return response
 
