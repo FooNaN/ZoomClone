@@ -5,7 +5,8 @@ import App from "./App";
 
 export const Context = createContext(null)
 ReactDOM.render(
-    <Context.Provider>
+    <Context.Provider
+        value={{}}>
         <App />
     </Context.Provider>,
     document.getElementById('root')
