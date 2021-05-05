@@ -109,7 +109,7 @@ app.post('/api/signaling/create_room', (req, res) => {
  * 1 == user is already in the room
  * 2 == room doesn't exist
  */
-app.post('/api/signaling/add_user', (req, res) => {
+app.post('/api/signaling/connect_user', (req, res) => {
     console.log(req.body) // placeholder
 })
 
@@ -127,5 +127,5 @@ io.on('connection', socket => {
     })
 })
 
-// server runs at port 3000
+// server runs at localhost:3000
 server.listen(3000)
