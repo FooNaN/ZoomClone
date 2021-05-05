@@ -25,14 +25,13 @@ def create_room():
     # generate random room id
     room_id = uuid4()
 
-    # make request to signaling server API
-    signaling_response = requests_lib.post("localhost:3000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
-    if (signaling_response.json()["operation_status"] == 1):
-        # if room with this id exists (very unlikely)
-        # temporary code
-        response = make_response({"room_id": "", "operation_status": 1}, status=200)
-        response.mimetype = "application/json"
-        return response
+    # make request to signaling server API to create empty room
+    requests_lib.post("localhost:3000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
+    # checking if all is ok should be here
+
+    # make request to signaling server API to add user to it
+    requests_lib.post("localhost:3000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
+    # checking if all is ok should be here
 
     # generate response as JSON
     response = make_response({"room_id": room_id, "operation_status": 0}, status=200)
@@ -59,7 +58,9 @@ def connect_user():
     user_id = request.get_json()["user_id"]
     room_id = request.get_json()["room_id"]
 
-    # do user connection here
+    # make request to signaling server API to add user to room
+    requests_lib.post("localhost:3000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
+    # checking if all is ok should be here
 
     # generate response as JSON
     response = make_response({"operation_status": 0}, status=200)

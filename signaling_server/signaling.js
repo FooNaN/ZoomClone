@@ -109,7 +109,7 @@ app.post('/api/signaling/create_room', (req, res) => {
  * 1 == user is already in the room
  * 2 == room doesn't exist
  */
-app.post('/api/signaling/add_user', (req, res) => {
+app.post('/api/signaling/connect_user', (req, res) => {
     console.log(req.body) // placeholder
 })
 
