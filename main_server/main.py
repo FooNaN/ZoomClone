@@ -6,12 +6,13 @@ app = Flask(__name__)
 @app.route("/api/main/create_room", methods=["POST"])
 def create_room():
     """
-    Create room and connect the user who created it
+    API to create room and connect the user who created it
 
     Input JSON structure:
     {
         user_id: <string>
     }
+
     Output JSON structure:
     {
         room_id: <string>
@@ -35,13 +36,14 @@ def create_room():
 @app.route("/api/main/connect_user", methods=["POST"])
 def connect_user():
     """
-    Connect user to specified room
+    API to connect user to specified room
 
     Input JSON structure:
     {
         user_id: <string>
         room_id: <string>
     }
+    
     Output JSON strucrure
     {
         status: <int> [unused]

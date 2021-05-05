@@ -61,8 +61,45 @@ function removeUser(roomId, userId) {
 
 /**
  * API for room creation
+ *
+ * input JSON structure:
+ * {
+ *     room_id: <string>
+ * }
+ *
+ * output JSON structure:
+ * {
+ *     status: <int>
+ * }
+ *
+ * status codes:
+ * 0 == room successfully created
+ * 1 == room already exists
  */
 app.post('/api/signaling/create_room', (req, res) => {
+    console.log(req.body) // placeholder
+})
+
+/**
+ * API for adding user to room
+ *
+ * input JSON structure:
+ * {
+ *     user_id: <string>
+ *     room_id: <string>
+ * }
+ *
+ * output JSON structure:
+ * {
+ *     status: <int>
+ * }
+ *
+ * status codes:
+ * 0 == user successfully added
+ * 1 == user already in the room
+ * 2 == room doesn't exist
+ */
+app.post('/api/signaling/add_user', (req, res) => {
     console.log(req.body) // placeholder
 })
 
