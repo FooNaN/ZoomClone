@@ -1,4 +1,5 @@
 from flask import Flask, request, make_response
+import requests as requests_lib
 from uuid import uuid4
 app = Flask(__name__)
 
@@ -17,12 +18,17 @@ def create_room():
         status: <int> [unused]
     }
     """
+    # deconstruct request JSON
+    user_id = request.get_json()["user_id"]
 
-    json = request.get_json()
-    user_id = json["user_id"]
-    room_id = uuid4() # generate random room id
-    # do room creation here
-    response = make_response({"room_id": room_id, "status": 0}, 200)
+    # generate random room id
+    room_id = uuid4()
+
+    # make request to signaling server API
+    signaling_response = requests_lib.post("localhost:3000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
+
+    # generate response as JSON
+    generated_response = make_response({"room_id": room_id, "status": 0}, status=200)
     response.mimetype = "application/json"
     return response
 
@@ -41,12 +47,14 @@ def connect_user():
         status: <int> [unused]
     }
     """
+    # deconstruct request JSON
+    user_id = request.get_json()["user_id"]
+    room_id = request.get_json()["user_id"]
 
-    json = request.get_json()
-    user_id = json["user_id"]
-    room_id = json["user_id"]
     # do user connection here
-    response = make_response({"status": 0}, 200)
+
+    # generate response as JSON
+    response = make_response({"status": 0}, status=200)
     response.mimetype = "application/json"
     return response
 

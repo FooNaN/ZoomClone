@@ -59,11 +59,16 @@ function removeUser(roomId, userId) {
     return true
 }
 
+/**
+ * API for room creation
+ */
 app.post('/api/signaling/create_room', (req, res) => {
     console.log(req.body) // placeholder
 })
 
-// socket.io listener
+/**
+ * socket.io listener
+ */
 io.on('connection', socket => {
     socket.on('join-room', (roomId, userId) => {
         socket.join(roomId)
