@@ -3,60 +3,71 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')
 
-let rooms = new Map();  // all available rooms and users in them
-
 /**
- * Create new room
- * @param roomId
- * @returns true if room didn't exist, false otherwise
+ * Class for handling which rooms exist and which users are in them
  */
-function createRoom(roomId) {
-    if (rooms.has(roomId)) {
-        return false
-    }
-    rooms.set(roomId, new Set())
-    return true
-}
+class RoomHandler {
 
-/**
- * Delete existing room
- * @param roomId
- * @returns true if room existed, false otherwise
- */
-function deleteRoom(roomId) {
-    if (!rooms.has(roomId)) {
-        return false
+    /**
+     * Class constructor
+     */
+    constructor() {
+        this.rooms = new Map();  // all available rooms and users in them
     }
-    rooms.delete(roomId)
-    return true
-}
 
-/**
- * Add user to room
- * @param roomId
- * @param userId
- * @returns true if user didn't exist and room existed, false otherwise
- */
-function addUser(roomId, userId) {
-    if (!rooms.has(roomId) || rooms.get(roomId).has(userId)) {
-        return false
+    /**
+     * Create new room
+     * @param roomId
+     * @returns true if room didn't exist, false otherwise
+     */
+     createRoom(roomId) {
+        if (this.rooms.has(roomId)) {
+            return false
+        }
+        this.rooms.set(roomId, new Set())
+        return true
     }
-    rooms.get(roomId).add(userId)
-    return true
-}
 
-/**
- * Remove user from room
- * @param roomId
- * @param userId
- * @returns true if user and room existed, false otherwise
- */
-function removeUser(roomId, userId) {
-    if (!rooms.has(roomId) || !rooms.get(roomId).has(userId)) {
-        return false
+    /**
+     * Delete existing room
+     * @param roomId
+     * @returns true if room existed, false otherwise
+     */
+    deleteRoom(roomId) {
+        if (!this.rooms.has(roomId)) {
+            return false
+        }
+        this.rooms.delete(roomId)
+        return true
     }
-    rooms.get(roomId).add(userId)
-    return true
+
+    /**
+     * Add user to room
+     * @param roomId
+     * @param userId
+     * @returns true if user didn't exist and room existed, false otherwise
+     */
+    addUser(roomId, userId) {
+        if (!this.rooms.has(roomId) || this.rooms.get(roomId).has(userId)) {
+            return false
+        }
+        this.rooms.get(roomId).add(userId)
+        return true
+    }
+
+    /**
+     * Remove user from room
+     * @param roomId
+     * @param userId
+     * @returns true if user and room existed, false otherwise
+     */
+    removeUser(roomId, userId) {
+        if (!this.rooms.has(roomId) || !this.rooms.get(roomId).has(userId)) {
+            return false
+        }
+        this.rooms.get(roomId).add(userId)
+        return true
+    }
 }
 
 /**
