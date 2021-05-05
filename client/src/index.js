@@ -1,10 +1,12 @@
-import React from 'react';
+import './index.scss'
+import React, {createContext} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import App from "./App";
 
+export const Context = createContext(null)
 ReactDOM.render(
-    <App />
-  document.getElementById('root')
+    <Context.Provider>
+        <App />
+    </Context.Provider>,
+    document.getElementById('root')
 );
-

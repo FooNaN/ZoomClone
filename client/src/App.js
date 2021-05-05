@@ -1,10 +1,13 @@
-import './App.css';
-import {render} from "@testing-library/react";
+import React from "react";
+import {BrowserRouter} from "react-router-dom"
+import AppRouter from "./components/AppRouter"
 
-const App {
+
+const App = () => {
     return (
-
-    );
+        <BrowserRouter>
+            <AppRouter/>
+        </BrowserRouter>
+);
 }
-
 export default App;
