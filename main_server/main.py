@@ -27,12 +27,14 @@ def create_room():
     # generate random room id
     room_id = uuid4()
 
+    app.logger.info("room " + str(room_id) + " created by user " + str(user_id)) # temporary code
+
     # make request to signaling server API to create empty room
-    requests_lib.post("localhost:4000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
+    requests_lib.post("http://localhost:4000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
     # checking if all is ok should be here
 
     # make request to signaling server API to add user to it
-    requests_lib.post("localhost:4000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
+    requests_lib.post("http://localhost:4000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
     # checking if all is ok should be here
 
     # generate response as JSON
@@ -57,7 +59,6 @@ def connect_user():
         operation_status: <int> [unused]
     }
     """
-    app.logger.info("aaa")
     # deconstruct request JSON
     user_id = request.get_json()["user_id"]
     room_id = request.get_json()["room_id"]
@@ -65,7 +66,7 @@ def connect_user():
     app.logger.info("connect user " + str(user_id) + " to room " + str(room_id)) # temporary code
 
     # make request to signaling server API to add user to room
-    requests_lib.post("localhost:4000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
+    requests_lib.post("http://localhost:4000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
     # checking if all is ok should be here
 
     # generate response as JSON
