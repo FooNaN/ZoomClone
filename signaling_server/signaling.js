@@ -90,7 +90,6 @@ rooms = new RoomHandler()
  */
 app.post('/api/signaling/create_room', (req, res) => {
     console.log(req.body) // temporary code
-    
 })
 
 /**
