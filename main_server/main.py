@@ -28,7 +28,7 @@ def create_room():
     signaling_response = requests_lib.post("localhost:3000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
 
     # generate response as JSON
-    generated_response = make_response({"room_id": room_id, "status": 0}, status=200)
+    response = make_response({"room_id": room_id, "status": 0}, status=200)
     response.mimetype = "application/json"
     return response
 
