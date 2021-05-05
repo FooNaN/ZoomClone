@@ -26,11 +26,11 @@ def create_room():
     room_id = uuid4()
 
     # make request to signaling server API to create empty room
-    requests_lib.post("localhost:3000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
+    requests_lib.post("localhost:4000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
     # checking if all is ok should be here
 
     # make request to signaling server API to add user to it
-    requests_lib.post("localhost:3000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
+    requests_lib.post("localhost:4000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
     # checking if all is ok should be here
 
     # generate response as JSON
@@ -59,7 +59,7 @@ def connect_user():
     room_id = request.get_json()["room_id"]
 
     # make request to signaling server API to add user to room
-    requests_lib.post("localhost:3000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
+    requests_lib.post("localhost:4000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
     # checking if all is ok should be here
 
     # generate response as JSON

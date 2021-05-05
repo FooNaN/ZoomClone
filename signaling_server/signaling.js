@@ -3,8 +3,6 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
-app.use(express.json())
-
 /**
  * Class for handling which rooms exist and which users are in them
  */
@@ -71,6 +69,8 @@ class RoomHandler {
     }
 }
 
+rooms = new RoomHandler()
+
 /**
  * API for room creation
  *
@@ -90,6 +90,7 @@ class RoomHandler {
  */
 app.post('/api/signaling/create_room', (req, res) => {
     console.log(req.body) // temporary code
+    
 })
 
 /**
