@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
-const io = require('socket.io')
+const io = require('socket.io')(server)
 
 /**
  * Class for handling which rooms exist and which users are in them
