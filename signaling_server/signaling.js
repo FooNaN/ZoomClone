@@ -7,7 +7,6 @@ const io = require('socket.io')
  * Class for handling which rooms exist and which users are in them
  */
 class RoomHandler {
-
     /**
      * Class constructor
      */
@@ -107,7 +106,7 @@ app.post('/api/signaling/create_room', (req, res) => {
  *
  * Status codes:
  * 0 == user successfully added
- * 1 == user already in the room
+ * 1 == user is already in the room
  * 2 == room doesn't exist
  */
 app.post('/api/signaling/add_user', (req, res) => {
