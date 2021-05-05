@@ -3,6 +3,8 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
+app.use(express.json())
+
 /**
  * Class for handling which rooms exist and which users are in them
  */
@@ -87,7 +89,7 @@ class RoomHandler {
  * 1 == room already exists
  */
 app.post('/api/signaling/create_room', (req, res) => {
-    console.log(req.body) // placeholder
+    console.log(req.body) // temporary code
 })
 
 /**
@@ -110,7 +112,7 @@ app.post('/api/signaling/create_room', (req, res) => {
  * 2 == room doesn't exist
  */
 app.post('/api/signaling/connect_user', (req, res) => {
-    console.log(req.body) // placeholder
+    console.log(req.body) // temporary code
 })
 
 /**
