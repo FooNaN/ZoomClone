@@ -2,36 +2,51 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.main {
-  height: 300px;
-  width: 500px;
-  display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
-  input {
-    height: 50px;
-    width: 100%;
-    font-family: 'Roboto', sans-serif;
-    font-size: 20px;
-    padding: 10px 20px;
-    border: none;
-    background: rgba(0, 0, 0, 0.13);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    &:focus {
-      outline: none;
+  .main {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    input {
+      height: 50px;
+      width: 100%;
+      font-family: 'Roboto', sans-serif;
+      font-size: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: rgba(0, 0, 0, 0.13);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      &:focus {
+        outline: none;
+      }
+    }
+    .btn-in {
+      cursor: pointer;
+      border: none;
+      color: white;
+      background: rgba(7, 7, 7, 0.62);
+      padding: 10px 20px;
+      border-radius: 10px;
     }
   }
-  .btn-in {
-    cursor: pointer;
-    border: none;
-    color: white;
-    background: rgba(7, 7, 7, 0.62);
-    padding: 10px 20px;
-    border-radius: 10px;
+  h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 25px;
+  }
+  .createroom {
+    .btn-in {
+      cursor: pointer;
+      border: none;
+      color: white;
+      background: rgba(7, 7, 7, 0.62);
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
   }
 }
