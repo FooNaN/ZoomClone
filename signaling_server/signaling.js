@@ -6,7 +6,7 @@ const io = require('socket.io')
 let rooms = new Map();  // all available rooms and users in them
 
 /**
- * create new room
+ * Create new room
  * @param roomId
  * @returns true if room didn't exist, false otherwise
  */
@@ -19,7 +19,7 @@ function createRoom(roomId) {
 }
 
 /**
- * delete existing room
+ * Delete existing room
  * @param roomId
  * @returns true if room existed, false otherwise
  */
@@ -32,7 +32,7 @@ function deleteRoom(roomId) {
 }
 
 /**
- * add user to room
+ * Add user to room
  * @param roomId
  * @param userId
  * @returns true if user didn't exist and room existed, false otherwise
@@ -46,7 +46,7 @@ function addUser(roomId, userId) {
 }
 
 /**
- * remove user from room
+ * Remove user from room
  * @param roomId
  * @param userId
  * @returns true if user and room existed, false otherwise
@@ -62,17 +62,17 @@ function removeUser(roomId, userId) {
 /**
  * API for room creation
  *
- * input JSON structure:
+ * Input JSON structure:
  * {
  *     room_id: <string>
  * }
  *
- * output JSON structure:
+ * Output JSON structure:
  * {
  *     status: <int>
  * }
  *
- * status codes:
+ * Status codes:
  * 0 == room successfully created
  * 1 == room already exists
  */
@@ -83,18 +83,18 @@ app.post('/api/signaling/create_room', (req, res) => {
 /**
  * API for adding user to room
  *
- * input JSON structure:
+ * Input JSON structure:
  * {
  *     user_id: <string>
  *     room_id: <string>
  * }
  *
- * output JSON structure:
+ * Output JSON structure:
  * {
  *     status: <int>
  * }
  *
- * status codes:
+ * Status codes:
  * 0 == user successfully added
  * 1 == user already in the room
  * 2 == room doesn't exist
