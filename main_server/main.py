@@ -67,4 +67,5 @@ def connect_user():
     return response
 
 if __name__ == "__main__":
+    # server runs at localhost:5000
     app.run()

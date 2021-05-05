@@ -127,5 +127,5 @@ io.on('connection', socket => {
     })
 })
 
-// server runs at port 3000
+// server runs at localhost:3000
 server.listen(3000)
