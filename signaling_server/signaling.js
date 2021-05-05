@@ -79,7 +79,7 @@ class RoomHandler {
  *
  * Output JSON structure:
  * {
- *     status: <int>
+ *     operation_status: <int>
  * }
  *
  * Status codes:
@@ -101,7 +101,7 @@ app.post('/api/signaling/create_room', (req, res) => {
  *
  * Output JSON structure:
  * {
- *     status: <int>
+ *     operation_status: <int>
  * }
  *
  * Status codes:

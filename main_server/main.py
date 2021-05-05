@@ -16,7 +16,7 @@ def create_room():
     Output JSON structure:
     {
         room_id: <string>
-        status: <int> [unused]
+        operation_status: <int> [unused]
     }
     """
     # deconstruct request JSON
@@ -27,15 +27,15 @@ def create_room():
 
     # make request to signaling server API
     signaling_response = requests_lib.post("localhost:3000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
-    if (signaling_response.json()["status"] == 1):
+    if (signaling_response.json()["operation_status"] == 1):
         # if room with this id exists (very unlikely)
         # temporary code
-        response = make_response({"room_id": "", "status": 1}, status=200)
+        response = make_response({"room_id": "", "operation_status": 1}, status=200)
         response.mimetype = "application/json"
         return response
 
     # generate response as JSON
-    response = make_response({"room_id": room_id, "status": 0}, status=200)
+    response = make_response({"room_id": room_id, "operation_status": 0}, status=200)
     response.mimetype = "application/json"
     return response
 
@@ -52,7 +52,7 @@ def connect_user():
 
     Output JSON strucrure
     {
-        status: <int> [unused]
+        operation_status: <int> [unused]
     }
     """
     # deconstruct request JSON
@@ -62,7 +62,7 @@ def connect_user():
     # do user connection here
 
     # generate response as JSON
-    response = make_response({"status": 0}, status=200)
+    response = make_response({"operation_status": 0}, status=200)
     response.mimetype = "application/json"
     return response
 
