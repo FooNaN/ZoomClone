@@ -69,4 +69,4 @@ def connect_user():
 
 if __name__ == "__main__":
     # server runs at localhost:5000
-    app.run()
+    app.run(port=5000)
