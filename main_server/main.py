@@ -27,7 +27,7 @@ def create_room():
     # generate random room id
     room_id = str(uuid4())
 
-    app.logger.info("room " + str(room_id) + " created by user " + str(user_id)) # temporary code
+    app.logger.info("Room " + str(room_id) + " created by user " + str(user_id))
 
     # make request to signaling server API to create empty room
     requests_lib.post("http://localhost:4000/api/signaling/create_room", json={"room_id": room_id}) # temporary code
@@ -63,7 +63,7 @@ def connect_user():
     user_id = request.get_json()["user_id"]
     room_id = request.get_json()["room_id"]
 
-    app.logger.info("connect user " + str(user_id) + " to room " + str(room_id)) # temporary code
+    app.logger.info("Connect user " + str(user_id) + " to room " + str(room_id))
 
     # make request to signaling server API to add user to room
     requests_lib.post("http://localhost:4000/api/signaling/connect_user", json={"user_id": user_id, "room_id": room_id}) # temporary code
