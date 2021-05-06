@@ -134,7 +134,6 @@ app.post("/api/signaling/create_room", (req, res) => {
  * 1 == user is already in the room or the room doesn't exist
  */
 app.post("/api/signaling/connect_user", (req, res) => {
-    console.log(req.body); // temporary code
     let userId = req.body["user_id"];
     let roomId = req.body["room_id"];
 
