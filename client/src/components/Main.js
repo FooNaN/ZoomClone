@@ -1,18 +1,40 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {connect_user, create_room} from "../http/api";
-
+import Peer from "peerjs";
+import {useHistory} from "react-router-dom";
 const Main = () => {
-    const [roomId, setRoomId] = useState(10);
-    const [userId, setUserId] = useState(10);
+    const history = useHistory()
+    var callOptions={'iceServers': [
+            {url: 'stun:95.xxx.xx.x9:3479',
+                username: "user",
+                credential: "xxxxxxxxxx"},
+            { url: "turn:95.xxx.xx.x9:3478",
+                username: "user",
+                credential: "xxxxxxxx"}]
+    };
+    const [roomId, setRoomId] = useState(0);
+    const [userId, setUserId] = useState(0);
+    const peer = new Peer({config: callOptions});
+
+    useEffect(() => {
+        peer.on('open', function(peerID) {
+            setUserId(peerID);
+        });
+    }, [peer.on])
     function handleChange(event) {
         event.preventDefault();
         setRoomId(event.target.value);
     }
     async function room_in() {
         let resp = await connect_user(userId, roomId);
+        if (resp.operation_status === 0) {
+            history.push(`/room/${roomId}`)
+        } else {
+            alert('проверьте номер комнаты')
+        }
     }
     async function room_create() {
-        let resp = await create_room(userId);
+        let resp = await create_room(userId).then( (resp) => {history.push(`/room/${resp.room_id}`)});
     }
     return (
         <div className='page'>
@@ -26,6 +48,7 @@ const Main = () => {
                     войти в комнату
                 </button>
             </div>
+            <h3>{userId}</h3>
             <h2> Или же можете создать комнату!</h2>
             <div className='createroom'>
                 <button className='btn-in' onClick={room_create}>
@@ -33,7 +56,6 @@ const Main = () => {
                 </button>
             </div>
         </div>
-
     );
 };
 
