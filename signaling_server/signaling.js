@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 
 app.use(express.json());
 
@@ -90,7 +90,7 @@ rooms = new RoomHandler();
  * 0 == room successfully created
  * 1 == room already exists
  */
-app.post('/api/signaling/create_room', (req, res) => {
+app.post("/api/signaling/create_room", (req, res) => {
     console.log(req.body); // temporary code
     res.send({"operation_status": 0});
 })
@@ -114,7 +114,7 @@ app.post('/api/signaling/create_room', (req, res) => {
  * 1 == user is already in the room
  * 2 == room doesn't exist
  */
-app.post('/api/signaling/connect_user', (req, res) => {
+app.post("/api/signaling/connect_user", (req, res) => {
     console.log(req.body); // temporary code
     res.send({"operation_status": 0});
 })
@@ -122,13 +122,13 @@ app.post('/api/signaling/connect_user', (req, res) => {
 /**
  * socket.io listener
  */
-io.on('connection', socket => {
-    socket.on('join-room', (roomId, userId) => {
+io.on("connection", socket => {
+    socket.on("join-room", (roomId, userId) => {
         socket.join(roomId);
-        socket.to(roomId).broadcast.emit('user-connected', userId);
+        socket.to(roomId).broadcast.emit("user-connected", userId);
 
-        socket.on('disconnect', () => {
-            socket.to(roomId).broadcast.emit('user-disconnected', userId);
+        socket.on("disconnect", () => {
+            socket.to(roomId).broadcast.emit("user-disconnected", userId);
         });
     });
 });
