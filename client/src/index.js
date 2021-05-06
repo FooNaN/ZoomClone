@@ -6,9 +6,9 @@ import Camera from "./components/Camera";
 
 export const Context = createContext(null)
 ReactDOM.render(
-    <Context.Provider>
-        {/*<App />*/}
-        <Camera/>
+    <Context.Provider value={{}}>>
+        <App />
+        //<Camera/>
     </Context.Provider>,
     document.getElementById('root')
 );
