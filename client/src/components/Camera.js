@@ -1,6 +1,7 @@
 import React from 'react';
 import Peer from "peerjs"
 
+
 class Camera extends React.Component {
 
 
