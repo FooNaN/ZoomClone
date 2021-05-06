@@ -8,7 +8,7 @@ const Room = () => {
 
     const {id} = useParams(); // roomId
     useEffect(() => {
-        joinIn(id, user.id)
+        joinIn(user.id, id)
     }, [])
     return (
         <div>
