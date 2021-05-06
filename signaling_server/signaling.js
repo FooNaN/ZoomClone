@@ -69,6 +69,16 @@ class RoomHandler {
         this.rooms.get(roomId).add(userId);
         return true;
     }
+
+    /**
+     * Check if user has access to room
+     * @param userId
+     * @param roomId
+     * @returns true if user has access, false otherwise
+     */
+    hasAccess(userId, roomId) {
+        return this.rooms.has(roomId) && this.rooms.get(roomId).has(userId);
+    }
 }
 
 let rooms = new RoomHandler();
@@ -91,15 +101,16 @@ let rooms = new RoomHandler();
  * 1 == room already exists
  */
 app.post("/api/signaling/create_room", (req, res) => {
-    console.log(req.body); // temporary code
     let roomId = req.body["room_id"];
 
     // try to create room
     if (rooms.createRoom(roomId)) {
         // success
+        console.log(`Room ${roomId} successfully created`)
         res.send({"operation_status": 0});
     } else {
         // fail
+        console.log(`Room ${roomId} failed to create`)
         res.send({"operation_status": 1});
     }
 })
@@ -130,9 +141,11 @@ app.post("/api/signaling/connect_user", (req, res) => {
     // try to add user
     if (rooms.addUser(userId, roomId)) {
         // success
+        console.log(`User ${userId} added to room ${roomId}`)
         res.send({"operation_status": 0});
     } else {
         // fail
+        console.log(`User ${userId} failed to be added to room ${roomId}`)
         res.send({"operation_status": 1});
     }
 })
@@ -142,12 +155,17 @@ app.post("/api/signaling/connect_user", (req, res) => {
  */
 io.on("connection", socket => {
     socket.on("join-room", (roomId, userId) => {
-        socket.join(roomId);
-        socket.to(roomId).broadcast.emit("user-connected", userId);
+        if (rooms.hasAccess(userId, roomId)) {
+            console.log(`SocketIO: User ${userId} connected to room ${roomId}`)
+            socket.join(roomId);
+            socket.to(roomId).broadcast.emit("user-connected", userId);
 
-        socket.on("disconnect", () => {
-            socket.to(roomId).broadcast.emit("user-disconnected", userId);
-        });
+            socket.on("disconnect", () => {
+                socket.to(roomId).broadcast.emit("user-disconnected", userId);
+            });
+        } else {
+            console.log(`SocketIO: User ${userId} denied connection to room ${roomId}`)
+        }
     });
 });
 
