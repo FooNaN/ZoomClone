@@ -44,11 +44,11 @@ class RoomHandler {
 
     /**
      * Add user to room
-     * @param roomId
      * @param userId
+     * @param roomId
      * @returns true if user didn't exist and room existed, false otherwise
      */
-    addUser(roomId, userId) {
+    addUser(userId, roomId) {
         if (!this.rooms.has(roomId) || this.rooms.get(roomId).has(userId)) {
             return false;
         }
@@ -58,11 +58,11 @@ class RoomHandler {
 
     /**
      * Remove user from room
-     * @param roomId
      * @param userId
+     * @param roomId
      * @returns true if user and room existed, false otherwise
      */
-    removeUser(roomId, userId) {
+    removeUser(userId, roomId) {
         if (!this.rooms.has(roomId) || !this.rooms.get(roomId).has(userId)) {
             return false;
         }
@@ -71,7 +71,7 @@ class RoomHandler {
     }
 }
 
-rooms = new RoomHandler();
+let rooms = new RoomHandler();
 
 /**
  * API for room creation
@@ -92,7 +92,16 @@ rooms = new RoomHandler();
  */
 app.post("/api/signaling/create_room", (req, res) => {
     console.log(req.body); // temporary code
-    res.send({"operation_status": 0});
+    let roomId = req.body["room_id"];
+
+    // try to create room
+    if (rooms.createRoom(roomId)) {
+        // success
+        res.send({"operation_status": 0});
+    } else {
+        // fail
+        res.send({"operation_status": 1});
+    }
 })
 
 /**
@@ -111,12 +120,21 @@ app.post("/api/signaling/create_room", (req, res) => {
  *
  * Status codes:
  * 0 == user successfully added
- * 1 == user is already in the room
- * 2 == room doesn't exist
+ * 1 == user is already in the room or the room doesn't exist
  */
 app.post("/api/signaling/connect_user", (req, res) => {
     console.log(req.body); // temporary code
-    res.send({"operation_status": 0});
+    let userId = req.body["user_id"];
+    let roomId = req.body["room_id"];
+
+    // try to add user
+    if (rooms.addUser(userId, roomId)) {
+        // success
+        res.send({"operation_status": 0});
+    } else {
+        // fail
+        res.send({"operation_status": 1});
+    }
 })
 
 /**
