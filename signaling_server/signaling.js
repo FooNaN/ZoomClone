@@ -5,83 +5,112 @@ const io = require("socket.io")(server);
 
 app.use(express.json());
 
-/**
- * Class for handling which rooms exist and which users are in them
- */
+/** Class for handling which rooms exist and which users are in them */
 class RoomHandler {
+    #logging
+    #rooms
+
     /**
      * Class constructor
+     * @param {boolean} logging - where or not to log events (default=false)
      */
-    constructor() {
-        this.rooms = new Map();  // all available rooms and users in them
+    constructor(logging=false) {
+        this.#logging = logging;
+        this.#rooms = new Map();  // all available rooms and users in them
+    }
+
+    /**
+     * Log message into console (if logging is enabled)
+     * @param {string} message - message to put into console
+     * @param {string} prefix
+     */
+    #log(message, prefix="RoomHandler: ") {
+        if (this.#logging) console.log(prefix + message);
     }
 
     /**
      * Create new room
-     * @param roomId
-     * @returns true if room didn't exist, false otherwise
+     * @param {string} roomId
+     * @returns {number} operation status
      */
      createRoom(roomId) {
-        if (this.rooms.has(roomId)) {
-            return false;
+        if (this.#rooms.has(roomId)) {
+            this.#log(`Failed to create room ${roomId} - it already exists`)
+            return 1; // 1 == room already exists
         }
-        this.rooms.set(roomId, new Set());
-        return true;
+        this.#rooms.set(roomId, new Set());
+        this.#log(`Create room ${roomId}`)
+        return 0; // 0 == room successfully created
     }
 
     /**
      * Delete existing room
-     * @param roomId
-     * @returns true if room existed, false otherwise
+     * @param {string} roomId
+     * @returns {number} operation status
      */
     deleteRoom(roomId) {
-        if (!this.rooms.has(roomId)) {
-            return false;
+        if (!this.#rooms.has(roomId)) {
+            this.#log(`Failed to delete room ${roomId} - it doesn't exist`)
+            return 1; // 1 == room doesn't exist
         }
-        this.rooms.delete(roomId);
-        return true;
+        this.#rooms.delete(roomId);
+        this.#log(`Delete room ${roomId}`)
+        return 0; // 0 == room successfully deleted
     }
 
     /**
      * Add user to room
-     * @param userId
-     * @param roomId
-     * @returns true if user didn't exist and room existed, false otherwise
+     * @param {string} userId
+     * @param {string} roomId
+     * @returns {number} operation status
      */
     addUser(userId, roomId) {
-        if (!this.rooms.has(roomId) || this.rooms.get(roomId).has(userId)) {
-            return false;
+        if (!this.#rooms.has(roomId)) {
+            this.#log(`Failed to add user ${userId} to room ${roomId} - the room doesn't exist`)
+            return 1; // 1 == the room doesn't exist
         }
-        this.rooms.get(roomId).add(userId);
-        return true;
+        if (this.#rooms.get(roomId).has(userId)) {
+            this.#log(`Failed to add user ${userId} to room ${roomId} - user is already in the room`)
+            return 2; // 2 == user is already in the room
+        }
+        this.#rooms.get(roomId).add(userId);
+        this.#log(`Add user ${userId} to room ${roomId}`)
+        return 0; // 0 == user successfully added
     }
 
     /**
      * Remove user from room
-     * @param userId
-     * @param roomId
-     * @returns true if user and room existed, false otherwise
+     * @param {string} userId
+     * @param {string} roomId
+     * @returns {number} operation status
      */
     removeUser(userId, roomId) {
-        if (!this.rooms.has(roomId) || !this.rooms.get(roomId).has(userId)) {
-            return false;
+        if (!this.#rooms.has(roomId)) {
+            this.#log(`Failed to remove user ${userId} from room ${roomId} - the room doesn't exist`)
+            return 1; // 1 == the room doesn't exist
         }
-        this.rooms.get(roomId).add(userId);
-        return true;
+        if (!this.#rooms.get(roomId).has(userId)) {
+            this.#log(`Failed to remove user ${userId} from room ${roomId} - user isn't in the room`)
+            return 2; // 2 == user isn't in the room
+        }
+        this.#rooms.get(roomId).add(userId);
+        this.#log(`Remove user ${userId} from room ${roomId}`)
+        return 0; // 0 == user successfully removed
     }
 
     /**
      * Check if user has access to room
-     * @param userId
-     * @param roomId
-     * @returns true if user has access, false otherwise
+     * @param {string} userId
+     * @param {string} roomId
+     * @returns {boolean} true if user has access, false otherwise
      */
     hasAccess(userId, roomId) {
-        return this.rooms.has(roomId) && this.rooms.get(roomId).has(userId);
+        return this.#rooms.has(roomId) && this.#rooms.get(roomId).has(userId);
     }
 }
 
-let rooms = new RoomHandler();
+/** Room handler */
+let rooms = new RoomHandler(true);
 
 /**
  * API for room creation
@@ -103,16 +132,8 @@ let rooms = new RoomHandler();
 app.post("/api/signaling/create_room", (req, res) => {
     let roomId = req.body["room_id"];
 
-    // try to create room
-    if (rooms.createRoom(roomId)) {
-        // success
-        console.log(`Room ${roomId} successfully created`)
-        res.send({"operation_status": 0});
-    } else {
-        // fail
-        console.log(`Room ${roomId} failed to create`)
-        res.send({"operation_status": 1});
-    }
+    // try to create room and send result back
+    res.send({"operation_status": rooms.createRoom(roomId)})
 })
 
 /**
@@ -131,27 +152,18 @@ app.post("/api/signaling/create_room", (req, res) => {
  *
  * Status codes:
  * 0 == user successfully added
- * 1 == user is already in the room or the room doesn't exist
+ * 1 == the room doesn't exist
+ * 2 == user is already in the room
  */
 app.post("/api/signaling/connect_user", (req, res) => {
     let userId = req.body["user_id"];
     let roomId = req.body["room_id"];
 
-    // try to add user
-    if (rooms.addUser(userId, roomId)) {
-        // success
-        console.log(`User ${userId} added to room ${roomId}`)
-        res.send({"operation_status": 0});
-    } else {
-        // fail
-        console.log(`User ${userId} failed to be added to room ${roomId}`)
-        res.send({"operation_status": 1});
-    }
+    // try to add user and send result back
+    res.send({"operation_status": rooms.addUser(userId, roomId)});
 })
 
-/**
- * socket.io listener
- */
+/** Socket.IO listener */
 io.on("connection", socket => {
     socket.on("join-room", (roomId, userId) => {
         if (rooms.hasAccess(userId, roomId)) {
@@ -168,5 +180,5 @@ io.on("connection", socket => {
     });
 });
 
-// server runs at localhost:4000
+/** Server running at localhost:4000 */
 server.listen(4000);
