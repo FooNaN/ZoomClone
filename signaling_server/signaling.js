@@ -12,7 +12,7 @@ class RoomHandler {
 
     /**
      * Class constructor
-     * @param {boolean} logging - where or not to log events (default=false)
+     * @param {boolean} logging - whether or not to log events (default=false)
      */
     constructor(logging=false) {
         this.#logging = logging;
