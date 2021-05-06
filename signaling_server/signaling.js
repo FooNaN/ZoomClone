@@ -1,9 +1,9 @@
-const express = require('express')
-const app = express()
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
-app.use(express.json())
+app.use(express.json());
 
 /**
  * Class for handling which rooms exist and which users are in them
@@ -23,10 +23,10 @@ class RoomHandler {
      */
      createRoom(roomId) {
         if (this.rooms.has(roomId)) {
-            return false
+            return false;
         }
-        this.rooms.set(roomId, new Set())
-        return true
+        this.rooms.set(roomId, new Set());
+        return true;
     }
 
     /**
@@ -36,10 +36,10 @@ class RoomHandler {
      */
     deleteRoom(roomId) {
         if (!this.rooms.has(roomId)) {
-            return false
+            return false;
         }
-        this.rooms.delete(roomId)
-        return true
+        this.rooms.delete(roomId);
+        return true;
     }
 
     /**
@@ -50,10 +50,10 @@ class RoomHandler {
      */
     addUser(roomId, userId) {
         if (!this.rooms.has(roomId) || this.rooms.get(roomId).has(userId)) {
-            return false
+            return false;
         }
-        this.rooms.get(roomId).add(userId)
-        return true
+        this.rooms.get(roomId).add(userId);
+        return true;
     }
 
     /**
@@ -64,14 +64,14 @@ class RoomHandler {
      */
     removeUser(roomId, userId) {
         if (!this.rooms.has(roomId) || !this.rooms.get(roomId).has(userId)) {
-            return false
+            return false;
         }
-        this.rooms.get(roomId).add(userId)
-        return true
+        this.rooms.get(roomId).add(userId);
+        return true;
     }
 }
 
-rooms = new RoomHandler()
+rooms = new RoomHandler();
 
 /**
  * API for room creation
@@ -91,8 +91,8 @@ rooms = new RoomHandler()
  * 1 == room already exists
  */
 app.post('/api/signaling/create_room', (req, res) => {
-    console.log(req.body) // temporary code
-    res.send({"operation_status": 0})
+    console.log(req.body); // temporary code
+    res.send({"operation_status": 0});
 })
 
 /**
@@ -115,8 +115,8 @@ app.post('/api/signaling/create_room', (req, res) => {
  * 2 == room doesn't exist
  */
 app.post('/api/signaling/connect_user', (req, res) => {
-    console.log(req.body) // temporary code
-    res.send({"operation_status": 0})
+    console.log(req.body); // temporary code
+    res.send({"operation_status": 0});
 })
 
 /**
@@ -124,14 +124,14 @@ app.post('/api/signaling/connect_user', (req, res) => {
  */
 io.on('connection', socket => {
     socket.on('join-room', (roomId, userId) => {
-        socket.join(roomId)
-        socket.to(roomId).broadcast.emit('user-connected', userId)
+        socket.join(roomId);
+        socket.to(roomId).broadcast.emit('user-connected', userId);
 
         socket.on('disconnect', () => {
-            socket.to(roomId).broadcast.emit('user-disconnected', userId)
-        })
-    })
-})
+            socket.to(roomId).broadcast.emit('user-disconnected', userId);
+        });
+    });
+});
 
 // server runs at localhost:4000
-server.listen(4000)
+server.listen(4000);
