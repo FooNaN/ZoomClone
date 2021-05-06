@@ -6,7 +6,7 @@ import {Context} from "../index";
 const Room = () => {
     const {user} = useContext(Context);
 
-    const {id} = useParams(); //room_id
+    const {id} = useParams(); // roomId
     useEffect(() => {
         joinIn(id, user.id)
     }, [])

@@ -1,7 +1,12 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        credentials: true
+    }
+});
 
 app.use(express.json());
 
@@ -165,7 +170,7 @@ app.post("/api/signaling/connect_user", (req, res) => {
 
 /** Socket.IO listener */
 io.on("connection", socket => {
-    socket.on("join-room", (roomId, userId) => {
+    socket.on("join-room", (userId, roomId) => {
         if (rooms.hasAccess(userId, roomId)) {
             console.log(`SocketIO: User ${userId} connected to room ${roomId}`)
             socket.join(roomId);
