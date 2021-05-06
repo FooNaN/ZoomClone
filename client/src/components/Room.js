@@ -15,14 +15,14 @@ const Room = () => {
     const peer = new Peer({config: callOptions});
     const [userId, setUserId] = useState(0);
     useEffect(() => {
-        peer.on('open', function(peerID) {
-            setUserId(peerID);
+        peer.on('open', function(peerId) {
+            setUserId(peerId);
         });
     }, [peer.on])
 
-    const {id} = useParams(); //room_id
+    const {roomId} = useParams();
     useEffect(() => {
-        joinIn(id, userId)
+        joinIn(roomId, userId)
     }, [peer.on]);
     return (
         <div>
