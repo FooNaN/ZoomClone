@@ -20,9 +20,9 @@ const Room = () => {
         });
     }, [peer.on])
 
-    const {roomId} = useParams();
+    const {id} = useParams(); // roomId
     useEffect(() => {
-        joinIn(roomId, userId)
+        joinIn(userId, id)
     }, [peer.on]);
     return (
         <div>
