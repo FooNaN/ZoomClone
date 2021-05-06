@@ -174,10 +174,10 @@ io.on("connection", socket => {
         if (rooms.hasAccess(userId, roomId)) {
             console.log(`SocketIO: User ${userId} connected to room ${roomId}`)
             socket.join(roomId);
-            socket.to(roomId).broadcast.emit("user-connected", userId);
+            socket.broadcast.to(roomId).emit("user-connected", userId);
 
             socket.on("disconnect", () => {
-                socket.to(roomId).broadcast.emit("user-disconnected", userId);
+                socket.broadcast.to(roomId).emit("user-disconnected", userId);
             });
         } else {
             console.log(`SocketIO: User ${userId} denied connection to room ${roomId}`)
