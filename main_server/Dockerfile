@@ -1,5 +1,5 @@
 # Use lightweight Python 3.8 image
-FROM python:3.8-slim-buster
+FROM python:3.8-slim
 
 # Set directory for Docker App
 WORKDIR /app
