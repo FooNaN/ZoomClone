@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
+RUN npm i
 
 # Copy source code into container
 COPY . .
@@ -14,4 +15,4 @@ COPY . .
 EXPOSE 4000
 
 # Run
-CMD ["node", "signaling.js"]
+CMD ["npm", "run", "devStart"]
