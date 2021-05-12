@@ -1,0 +1,7 @@
+# Unwanted Python files
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.idea/
+README.md

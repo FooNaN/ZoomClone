@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Copy source code into container
-COPY signaling.js ./
+COPY . .
 
 # Set port to 4000
 EXPOSE 4000

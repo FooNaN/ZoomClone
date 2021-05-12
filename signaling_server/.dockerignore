@@ -1,0 +1,6 @@
+# Unwanted Node.js files
+*/node_modules
+*/.pnp
+.pnp.js
+.idea/
+README.md
