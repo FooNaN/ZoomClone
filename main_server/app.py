@@ -13,7 +13,6 @@ app.config['CORS_RESOURCES'] = {r"/api/*": {"origins": "*"}}
 cors = CORS(app)
 
 @app.route("/api/main/create_room", methods=["POST"])
-# @cross_origin()
 def create_room():
     """
     API to create room and connect the user who created it
@@ -48,11 +47,9 @@ def create_room():
     # generate response as JSON
     response = make_response({"room_id": room_id, "operation_status": 0}, 200)
     response.mimetype = "application/json"
-    response.headers.add('Access-Control-Allow-Origin', '*') # temporary code
     return response
 
 @app.route("/api/main/connect_user", methods=["POST"])
-# @cross_origin()
 def connect_user():
     """
     API to connect user to specified room
@@ -81,7 +78,6 @@ def connect_user():
     # generate response as JSON
     response = make_response({"operation_status": 0}, 200)
     response.mimetype = "application/json"
-    response.headers.add('Access-Control-Allow-Origin', '*') # temporary code
     return response
 
 if __name__ == "__main__":
