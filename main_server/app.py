@@ -1,11 +1,19 @@
 from flask import Flask, request, make_response
-from flask_cors import cross_origin
+# from flask_cors import cross_origin
+from flask_cors import CORS
 import requests as requests_lib
 from uuid import uuid4
+
 app = Flask(__name__)
 
+# Set CORS options on app configuration
+app.config['CORS_HEADERS'] = "Content-Type"
+app.config['CORS_RESOURCES'] = {r"/api/*": {"origins": "*"}}
+
+cors = CORS(app)
+
 @app.route("/api/main/create_room", methods=["POST"])
-@cross_origin()
+# @cross_origin()
 def create_room():
     """
     API to create room and connect the user who created it
@@ -40,10 +48,11 @@ def create_room():
     # generate response as JSON
     response = make_response({"room_id": room_id, "operation_status": 0}, 200)
     response.mimetype = "application/json"
+    response.headers.add('Access-Control-Allow-Origin', '*') # temporary code
     return response
 
 @app.route("/api/main/connect_user", methods=["POST"])
-@cross_origin()
+# @cross_origin()
 def connect_user():
     """
     API to connect user to specified room
@@ -72,6 +81,7 @@ def connect_user():
     # generate response as JSON
     response = make_response({"operation_status": 0}, 200)
     response.mimetype = "application/json"
+    response.headers.add('Access-Control-Allow-Origin', '*') # temporary code
     return response
 
 if __name__ == "__main__":
